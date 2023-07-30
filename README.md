@@ -1,5 +1,5 @@
 
-<div align="center"><h4> Hola bienvenid@! </h4>
+<div align="center"><h3> Hola bienvenid@! </h3>
 ## Características del bot 
 |  Contenido  |                                           Sip |
 | :---------------------------------------------: | :-----------: |
