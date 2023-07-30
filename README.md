@@ -1,5 +1,6 @@
 
 <div align="center"><h3> Hola bienvenid@! </h3>
+  
 ## Características del bot 
 |  Contenido  |                                           Sip |
 | :---------------------------------------------: | :-----------: |
