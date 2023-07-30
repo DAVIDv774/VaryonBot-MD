@@ -1,6 +1,6 @@
-# VaryonBot-MD
+
 <div align="center"><h3> Hola bienvenid@! </h3>
-  
+<div align="center"><h3> # VaryonBot-MD! </h3>
 ## Características del bot 
 |  Contenido  |                                           Sip |
 | :---------------------------------------------: | :-----------: |
