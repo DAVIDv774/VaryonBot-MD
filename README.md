@@ -61,15 +61,7 @@
 > pm2 kill
 ```
 
-# 🔥Ejecutar el bot 24/7 
-- Es aconsejable que subas la carpeta VarySesion ya activada, para ya no tener que escanear otro código QR
-
-## Desplegable en Heroku & railway
-- Heroku => https://heroku.com/deploy?template=URL_del_repositorio_actual
-
-- Railway => https://railway.app/new/template?template=URL_del_repositorio_actual
-
-## Si encuentras algún error ó necesitas más información, por favor contactame :D
+## Si encuentras algún error ó necesitas más información, por favor contactame
 <a href="https://wa.me/573245088667?text=Wenas...+me+ayudas+con+el+bot+multidevice+:)"><img src="https://img.shields.io/badge/WhatsApp-25D366?style=for-the-badge&logo=whatsapp&logoColor=white" />
 
 </div>
