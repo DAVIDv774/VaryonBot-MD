@@ -1,5 +1,5 @@
 # VaryonBot-MD
-<div align="center"><h3> Bienvenid@! </h3>
+<div align="center"><h3> Hola bienvenid@! </h3>
   
 ## Características del bot 
 |  Contenido  |                                           Sip |
