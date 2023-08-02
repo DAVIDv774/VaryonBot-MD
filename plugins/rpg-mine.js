@@ -2,7 +2,7 @@ let handler = async (m, { conn }) => {
 	if (!global.db.data.chats[m.chat].cmdRpg && m.isGroup) return m.reply(`_Este comando está deshabilitado para este grupo._`)
    let hasil = Math.floor(Math.random() * 5000)
    let time = global.db.data.users[m.sender].lastmiming + 14400000
-   if (new Date - global.db.data.users[m.sender].lastmiming < 14400000) throw `Espera *${msToTime(time - new Date())}* para regresar a minar`
+   if (new Date - global.db.data.users[m.sender].lastmiming < 14400000) m.reply(`Espera *${msToTime(time - new Date())}* para regresar a minar`)
    global.db.data.users[m.sender].exp += hasil
    m.reply(`*${llavea} ${felicidades} / Minaste ${llavec}!* *${hasil} XP*`)
    global.db.data.users[m.sender].lastmiming = new Date * 1

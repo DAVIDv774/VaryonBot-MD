@@ -17,30 +17,22 @@ async function handler(m, { conn, args, usedPrefix, command }) {
 ➼ *coin* = coin ©️
 ➼ *exp* = Experiencia ✨`.trim()
    const type = (args[0] || '').toLowerCase()
-   if (!item.includes(type)) return conn.reply(m.chat, lol, m, {
-      mentions: [m.sender]
-   })
+   if (!item.includes(type)) return conn.reply(m.chat, lol, m, { mentions: [m.sender]})
    const count = Math.min(Number.MAX_SAFE_INTEGER, Math.max(1, (isNumber(args[1]) ? parseInt(args[1]): 1))) * 1
    let who = m.mentionedJid && m.mentionedJid[0] ? m.mentionedJid[0]: args[2] ? (args[2].replace(/[@ .+-]/g, '') + '@s.whatsapp.net'): ''
    if (!who) return m.reply('Taguea al usuario')
    if (!(who in global.db.data.users)) return m.reply(`El Usuario no está en mi base de datos`)
    if (user[type] * 1 < count) return m.reply(`*${type}*  insuficiente para transferir`)
    let confirm = `
-   ¿Está seguro de que desea transferir *${count}* _*${type}*_ a  *@${(who || '').replace(/@s\.whatsapp\.net/g, '')}* ?
+¿Está seguro de que desea transferir *${count}* _*${type}*_ a  *@${(who || '').replace(/@s\.whatsapp\.net/g, '')}* ?
 
-   - Tienes  *60s*
-   _presiona un boton_
-   `.trim()
-
-   conn.sendButton(m.chat, confirm, null, [['si'], ['no']], m, {
-      mentions: [who]
-   })
-   confirmation[m.sender] = { sender: m.sender, to: who, message: m, type, count, timeout: setTimeout(() => (m.reply('Se acabó el tiempo'), delete confirmation[m.sender]), 60 * 1000)
-   }
+- Tienes  *60s*
+_presiona un boton_`.trim()
+conn.sendFile(m.chat, null, null, confirm, null, { mentions: [who]})
+confirmation[m.sender] = { sender: m.sender, to: who, message: m, type, count, timeout: setTimeout(() => (m.reply('Se acabó el tiempo'), delete confirmation[m.sender]), 60 * 1000)}
 }
 
-handler.before = async m => {
-   if (m.isBaileys) return
+handler.before = async m => { if (m.isBaileys) return
    if (!(m.sender in confirmation)) return
    if (!m.text) return
    let { timeout, sender, message, to, type, count } = confirmation[m.sender]

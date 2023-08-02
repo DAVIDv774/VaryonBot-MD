@@ -2,12 +2,12 @@ let ro = 3000
 let handler = async (m, { conn, usedPrefix, command }) => {
 	if (!global.db.data.chats[m.chat].cmdRpg && m.isGroup) return m.reply(`_Este comando está deshabilitado para este grupo._`)
    let time = global.db.data.users[m.sender].lastrob + 7200000
-   if (new Date - global.db.data.users[m.sender].lastrob < 7200000) throw `¡Hey! Espera *${msToTime(time - new Date())}* para volver a robar`
+   if (new Date - global.db.data.users[m.sender].lastrob < 7200000) m.reply(`¡Hey! Espera *${msToTime(time - new Date())}* para volver a robar`)
    let who
    if (m.isGroup) who = m.mentionedJid[0] ? m.mentionedJid[0]: m.quoted ? m.quoted.sender: false
    else who = m.chat
-   if (!who) throw `Etiqueta a alguien para robar`
-   if (!(who in global.db.data.users)) throw `El usuario no se encuentra en mi base de datos`
+   if (!who) m.reply(`Etiqueta a alguien para robar`)
+   if (!(who in global.db.data.users)) m.reply(`El usuario no se encuentra en mi base de datos`)
    let users = global.db.data.users[who]
    let rob = Math.floor(Math.random() * ro)
    if (users.exp < rob) return m.reply(`@${who.split`@`[0]} tiene menos de *${ro} xp*`, null, { mentions: [who]})

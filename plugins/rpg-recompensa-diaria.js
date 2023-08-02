@@ -3,7 +3,7 @@ const prem = 20000
 let handler = async (m, { conn, isPrems }) => {
 	if (!global.db.data.chats[m.chat].cmdRpg && m.isGroup) return m.reply(`_Este comando est� deshabilitado para este grupo._`)
    let time = global.db.data.users[m.sender].lastclaim + 86400000
-   if (new Date - global.db.data.users[m.sender].lastclaim < 86400000) throw `*Ya recogiste tu recompensa diaria*\n\n🕚 Vuelve en *${msToTime(time - new Date())}* `
+   if (new Date - global.db.data.users[m.sender].lastclaim < 86400000) m.reply(`*Ya recogiste tu recompensa diaria*\n\n🕚 Vuelve en *${msToTime(time - new Date())}* `)
    global.db.data.users[m.sender].exp += isPrems ? prem: free
    m.reply(`\n *${llavea} RECOMPENSA DIARIA ${llavec}*\n\n${cuadro} *Has recibido:*\n${XP}/ *XP* : +${isPrems ? prem: free}`)
    global.db.data.users[m.sender].lastclaim = new Date * 1

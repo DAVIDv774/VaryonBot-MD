@@ -20,7 +20,7 @@ let handler = async (m, { conn, text }) => {
     thumbnailUrl: thumbnail,
     thumbnail: "",
     sourceUrl: `${dl_url}`}}, mimetype: "audio/mp4", fileName: `${title}.mp3` }, { quoted: m })
-    m.react(done); handler.coin = true } catch { await m.react(error)}
+    m.react(done); m.coin = true } catch { await m.react(error)}
 }
 handler.help = ['playmp3']
 handler.tags = ['dl', 'servicio']

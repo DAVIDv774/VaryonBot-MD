@@ -12,7 +12,7 @@ let handler = async (m, { conn, text }) => {
     await conn.sendMessage(m.chat, { image: { url: thumbnail }, caption: play, }, { quoted: m }); m.react(rwait)
     try { const { title, desc, thumb, channel, views, publish, duration, sizeB, size, dl_url } = await Api.ytmp4(`https://www.youtube.com/watch?v=${videoId}`)
     let cap = `*『 DV-YouTube 』*\n\n▢ *Título:* ${title}\n▢ *Tamaño* ${size}`.trim()
-    await conn.sendMessage(m.chat, { document: { url: dl_url }, caption: cap, mimetype: 'video/mp4', fileName: title + `.mp4` }, { quoted: m }); m.react(done); handler.coin = true } catch { await m.react(error) }
+    await conn.sendMessage(m.chat, { document: { url: dl_url }, caption: cap, mimetype: 'video/mp4', fileName: title + `.mp4` }, { quoted: m }); m.react(done); m.coin = true } catch { await m.react(error) }
 }
 handler.help = ['playmp4']
 handler.tags = ['dl', 'servicio']
