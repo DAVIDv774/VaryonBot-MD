@@ -10,6 +10,7 @@ import printMessage from './lib/print.js'
 import Helper from './lib/helper.js'
 import Queque from './lib/queque.js'
 import moment from 'moment-timezone'
+import fs from 'fs'
 const { getContentType } = (await import('@adiwajshing/baileys')).default
 const isNumber = x => typeof x === 'number' && !isNaN(x)
 export async function handler(chatUpdate) { this.msgqueque = this.msgqueque || new Queque()
@@ -358,17 +359,11 @@ export async function participantsUpdate({ id, participants, action }) {
                   let ppg = await this.profilePictureUrl(id, 'image').catch(_ => pp)
                     let fesha = moment().tz(Intl.DateTimeFormat().resolvedOptions().timeZone).format('DD/MM/YY HH:mm:ss')
                     let mas = String.fromCharCode(8206).repeat(850)
-                    try {
-                     pp = await this.profilePictureUrl(user, 'image')
-                     } catch (e) {} finally {
-                     	let apii = await this.getFile(pp)
+                    try { pp = await this.profilePictureUrl(user, 'image') } catch (e) {} finally { let apii = await this.getFile(pp)
                      text = (action === 'add' ? (chat.sWelcome || this.welcome || Connection.conn.welcome || 'Welcome, @user!').replace('@subject', await this.getName(id)).replace('@desc', groupMetadata.desc?.toString() || '*Descripción*'):
                         (chat.sBye || this.bye || Connection.conn.bye || 'Bye, @user!')).replace('@user', '@' + user.split('@')[0])
 
-                        this.sendFile(id, apii.data, 'Imagen.jpg', text, null, { mentions: this.parseMention(text)})
-
-                     /*this.sendButton(id, apii.data, text, groupMetadata.subject, [[(action == 'add' ? '¡¡PING¡¡': '...adios'), (action == 'add' ? '.ping': '.adiosaudio')], ['⦙☰ MENU', `.menu`]], null, {
-                        mentions: this.parseMention(text)})*/
+                        this.sendFile(id, apii.data, 'Varyon.jpeg', text, {key: { participant: "0@s.whatsapp.net","remoteJid": "0@s.whatsapp.net"},"message": {"groupInviteMessage": {"groupJid": "573245088667-1616169743@g.us","inviteCode": "m","groupName": "P", "caption": action === 'add' ? 'Nuevo participante bienvenido!' : 'Menos un participante, no le sabe al grupo', 'jpegThumbnail': fs.readFileSync('./multimedia/imagenes/mythumb.jpg') }}}, false, { contextInfo: { mentionedJid: [user],externalAdReply:{ title: action === 'add' ? 'Fecha de ingreso | '+ fesha : 'Fecha de salida | '+ fesha,"body": 'El bot mas chidori tercer mundista',"previewType":"PHOTO","thumbnailUrl": ppg,"sourceUrl":`youtube.com`}}})
                   }
                }
             }
