@@ -24,13 +24,13 @@ global.rpyt = { contextInfo: { externalAdReply: {
 
    //NO SE XD
 global.menu = { contextInfo: { externalAdReply: {
-   	thumbnail: fs.readFileSync('./multimedia/imagenes/Discord.jpg'),
+   	thumbnail: fs.readFileSync('./multimedia/imagenes/Minecraft.jpg'),
             mediaUrl: linkDiscord,
             mediaType: 'VIDEO',
             description: '¡Hola! '+ Username,
-            title: '¡Hola! '+ Username + ', únete a nuestro servidor de Minecraft.',
+            title: '\uD83C\uDFD4\uD83D\uDDFF\u039CI\u0147\u20AC\u0106\u0158\u0394\u20A3\u0166  \u0424FC\uD83C\uDFD4\uD83D\uDDFF',
             body: 'Presione aquí!',
-            sourceUrl: linkDiscord
+            sourceUrl: WaLink
            }
         }
     }
