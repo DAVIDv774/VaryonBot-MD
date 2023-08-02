@@ -15,7 +15,7 @@ global.author = '○ Varyon-Bot - 𝟸𝟺/𝟽'
 global.namebot = 'Varyon-Bot'
 global.Nomowner = '『𝗗𝗔𝗩𝗜𝗗/⁷̶⁷̶⁴̶』'
 global.Numowner = '573245088667'
-global.WaLink = 'https://chat.whatsapp.com'
+global.WaLink = 'https://chat.whatsapp.com/DDhJbR9P8mv5K2rwr1icoj'
 //global.fgig = '○ Varyon-Bot - 𝟸𝟺/𝟽'
 
 global.owner = [
