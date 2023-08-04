@@ -71,6 +71,7 @@ export async function handler(chatUpdate) { this.msgqueque = this.msgqueque || n
                 if (!('sDemote' in chat)) chat.sDemote = ''
                 if (!('delete' in chat)) chat.delete = true
                 if (!('antiLink' in chat)) chat.antiLink = false
+                if (!('antiArab' in chat)) chat.antiArab = false
                 ////
                 if (!('cmdDl' in chat)) chat.cmdDl = true
                 if (!('cmdRpg' in chat)) chat.cmdRpg = true
@@ -89,6 +90,7 @@ export async function handler(chatUpdate) { this.msgqueque = this.msgqueque || n
                     sDemote: '',
                     delete: true,
                     antiLink: false,
+                    antiArab: false,
                     cmdDl: true,
                     cmdRpg: true,
                     viewonce: false,
