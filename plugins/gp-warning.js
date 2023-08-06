@@ -3,8 +3,8 @@ let handler = async (m, { conn, text, args, groupMetadata, usedPrefix, command }
    let who
    if (m.isGroup) who = m.mentionedJid[0] ? m.mentionedJid[0]: m.quoted ? m.quoted.sender: false
    else who = m.chat
-   if (!who) m.reply(`Etiqueta o menciona a alguien\n\n📌 Ejemplo : ${usedPrefix + command} @user`)
-   if (!(who in global.db.data.users)) m.reply(`El usuario no se encuentra en mi base de datos`)
+   if (!who) return m.reply(`Etiqueta o menciona a alguien\n\n📌 Ejemplo : ${usedPrefix + command} @user`)
+   if (!(who in global.db.data.users)) return m.reply(`El usuario no se encuentra en mi base de datos`)
    let name = conn.getName(m.sender)
    let warn = global.db.data.users[who].warn
    if (warn < war) { global.db.data.users[who].warn += 1
