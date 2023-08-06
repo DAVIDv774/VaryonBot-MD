@@ -1,5 +1,4 @@
 import * as fs from 'fs'
-
 export async function before(m, { conn, isAdmin, isBotAdmin, isOwner, isROwner }) {
    if (m.isBaileys && m.fromMe) return !0
    if (m.isGroup) return !1

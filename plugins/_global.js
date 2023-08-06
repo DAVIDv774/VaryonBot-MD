@@ -2,7 +2,7 @@ import * as fs from 'fs'
 let handler = m => m
 handler.all = async function (m) {
 	let Username = await this.getName(m.sender)
-		let linkDiscord = 'https://discord.gg/vN533MJ8KF'
+    let linkDiscord = 'https://discord.gg/vN533MJ8KF'
 
 global.vary = { contextInfo: { externalAdReply: {
             thumbnail: fs.readFileSync('./multimedia/imagenes/music.jpg'),
