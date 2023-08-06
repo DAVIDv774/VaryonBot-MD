@@ -1,4 +1,3 @@
-import translate from '@vitalets/google-translate-api'
 import fetch from "node-fetch"
 let handler = async (m, { text, command, args, usedPrefix }) => {
   if (!text) throw `*[❗] 𝙸𝙽𝙶𝚁𝙴𝚂𝙴 𝚄𝙽 𝚃𝙴𝚇𝚃𝙾 𝙿𝙰𝚁𝙰 𝙷𝙰𝙱𝙻𝙰𝚁 𝙲𝙾𝙽 𝚂𝙸𝙼𝚂𝙸𝙼𝙸 𝙾 𝙴𝙻 𝙱𝙾𝚃*\n\n*𝙴𝙹𝙴𝙼𝙿𝙻𝙾: ${usedPrefix + command} Hola bot*`
@@ -25,8 +24,7 @@ let handler = async (m, { text, command, args, usedPrefix }) => {
   let res222 = await fetch(`https://violetics.pw/api/utility/simsimi?apikey=beta&text=${resuuu[0][0][0]}`)  
   let json222 = await res222.json()
   let resulttt = json222.result
-  let lolll = await translate(`${resulttt}`, { to: 'es', autoCorrect: true })
-  m.reply(lolll.text)      
+  m.reply(`${resulttt}`)
   }}
 }
 handler.help = ['bot']

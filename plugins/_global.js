@@ -2,7 +2,6 @@ import * as fs from 'fs'
 let handler = m => m
 handler.all = async function (m) {
 	let Username = await this.getName(m.sender)
-    let linkDiscord = 'https://discord.gg/vN533MJ8KF'
 
 global.vary = { contextInfo: { externalAdReply: {
             thumbnail: fs.readFileSync('./multimedia/imagenes/music.jpg'),
@@ -24,12 +23,12 @@ global.rpyt = { contextInfo: { externalAdReply: {
 
    //NO SE XD
 global.menu = { contextInfo: { externalAdReply: {
-   	thumbnail: fs.readFileSync('./multimedia/imagenes/Minecraft.jpg'),
-            mediaUrl: linkDiscord,
+   	thumbnail: fs.readFileSync('./multimedia/imagenes/mylogo.jpg'),
+            mediaUrl: 'https://github.com/DAVIDv774/VaryonBot-MD',
             mediaType: 'VIDEO',
             description: '¡Hola! '+ Username,
-            title: '\uD83C\uDFD4\uD83D\uDDFF\u039CI\u0147\u20AC\u0106\u0158\u0394\u20A3\u0166  \u0424FC\uD83C\uDFD4\uD83D\uDDFF',
-            body: 'Presione aquí!',
+            title: 'VaryonBot-MD 24/7',
+            body: 'El Bot mas chidori terser mundista',
             sourceUrl: WaLink
            }
         }

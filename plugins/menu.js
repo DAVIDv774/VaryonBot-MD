@@ -65,11 +65,7 @@ const defaultMenu = { before: `
 ┃ *Creador :* %prop
 ┃ *wa.me/573245088667*
 ╰─────────────
-● *Hola!* %name, únete a nuestro servidor de Minecraft!
-▢ Ingresa al servidor de Discord, una vez dentro busca en el apartado de [ *Server-IP* ], ahí encontrarás la *IP* y el *Puerto* del servidor de Minecraft.
-
-▢ *Discord :* https://discord.gg/vN533MJ8KF
-
+● *¿Sabías que?* : %sabíasque
 %readmore
 *☲ Menu de comandos*\n`.trimStart(),
   header: '╔I *「 %category 」*\n║╭—————————',
