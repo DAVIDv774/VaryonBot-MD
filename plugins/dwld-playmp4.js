@@ -1,4 +1,4 @@
-import Api from 'api-dylux'
+import ytdl from '../lib/ytdl2.js'
 import yts from 'yt-search'
 const more = String.fromCharCode(8206)
 const readMore = more.repeat(850)
@@ -8,11 +8,11 @@ let handler = async (m, { conn, text }) => {
     let vid = (await yts(text)).all[0]
     if (!vid) return m.reply(`Sin resultados`)
     let { title, description, thumbnail, videoId, timestamp, views, ago, url } = vid
-    let play = `${cuadro} ${tituloemoji} *Titulo :* ${title}\n${cuadro} ${publicadoemoji} *Publicado :* ${ago}\n${cuadro} ${duracionemoji} *Duración :* ${timestamp}\n${cuadro} ${vistasemoji} *Vistas :* ${views}\n\n_Cargando Video..._\n${readMore}\n*Link :* https://www.youtube.com/watch?v=${videoId}`
+    let play = `${cuadro} ${tituloemoji} *Titulo :* ${title}\n${cuadro} ${publicadoemoji} *Publicado :* ${ago}\n${cuadro} ${duracionemoji} *Duración :* ${timestamp}\n${cuadro} ${vistasemoji} *Vistas :* ${views}\n\nCargando Video${readMore}\n*Link :* https://www.youtube.com/watch?v=${videoId}`
     await conn.sendMessage(m.chat, { image: { url: thumbnail }, caption: play, }, { quoted: m }); m.react(rwait)
-    try { const { title, desc, thumb, channel, views, publish, duration, sizeB, size, dl_url } = await Api.ytmp4(`https://www.youtube.com/watch?v=${videoId}`)
-    let cap = `*『 DV-YouTube 』*\n\n▢ *Título:* ${title}\n▢ *Tamaño* ${size}`.trim()
-    await conn.sendMessage(m.chat, { document: { url: dl_url }, caption: cap, mimetype: 'video/mp4', fileName: title + `.mp4` }, { quoted: m }); m.react(done); m.coin = true } catch { await m.react(error) }
+    try { const { title, thumb, Date, duration, channel, quality, contentLength, description, videoUrl } = await ytdl.mp4(`https://www.youtube.com/watch?v=${videoId}`)
+    let cap = `*『 DV-YouTube 』*\n\n▢ *Título:* ${title}\n▢ *Calidad:* ${quality}`.trim()
+    await conn.sendMessage(m.chat, { document: { url: videoUrl }, caption: cap, mimetype: 'video/mp4', fileName: title + `.mp4` }, { quoted: m }); m.react(done); m.coin = true } catch { await m.react(error) }
 }
 handler.help = ['playmp4']
 handler.tags = ['dl', 'servicio']

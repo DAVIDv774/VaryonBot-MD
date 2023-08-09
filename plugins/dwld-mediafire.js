@@ -1,21 +1,16 @@
-//By DAVID-774
-import { mediafiredl } from '@bochilteam/scraper'
-let handler = async (m, { conn, args, usedPrefix, command }) => {
-	if (!global.db.data.chats[m.chat].cmdDl && m.isGroup) return m.reply(`_Este comando está deshabilitado para este grupo._`)
-    if (!args[0]) return m.reply(`Use example ${usedPrefix}${command} https://www.mediafire.com/file/941xczxhn27qbby/GBWA_V12.25FF-By.SamMods-.apk/file`)
+import { mediafireDl } from './lib/mediafire.js'
+let handler = async (m, { conn, args }) => {
+    if (!global.db.data.chats[m.chat].cmdDl && m.isGroup) return m.reply(`_Este comando está deshabilitado para este grupo._`)
+    if (!args[0]) return m.reply(`Y el link?`)
     m.react(rwait)
-    let res = await mediafiredl(args[0])
-    let { url, url2, filename, ext, aploud, filesize, filesizeH } = res
-    let caption = `
-    『 MEDIAFIRE / 𝐊ᴇᴘʟᴇʀ/𝐁ᴏᴛ 』
-*▢ Nombre:* ${filename}
-*▢ Tamaño:* ${filesizeH}
-*▢ Extension:* ${ext}
-*▢ Subido:* ${aploud}
-`.trim()
-    m.reply(caption)
-    await conn.sendFile(m.chat, url, filename, '', m, null, { mimetype: ext, asDocument: true }); m.react(done); handler.coin = true }
-    
+    const mediafire = await mediafireDl(args[0])
+    const text = `『 MEDIAFIRE / Varyon-Bot 』
+*▢ Nombre:* ${mediafire[0].nama}
+*▢ Tamaño:* ${mediafire[0].size}`
+    m.reply(text)
+    try { conn.sendMessage(m.chat, { document: { url: mediafire[0].link }, fileName: mediafire[0].nama, mimetype: mediafire[0].mime }, { quoted: m }); m.react(done); m.coin = true } catch { m.react(error) }
+}
+
 handler.help = ['mediafire'].map(v => v + ' <url>')
 handler.tags = ['dl']
 handler.command = /^(mediafire|mf)$/i

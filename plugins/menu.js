@@ -75,7 +75,7 @@ const defaultMenu = { before: `
 }
 handler.help = ['menu', 'help', '?']
 handler.command = /^(menu|help|menú|\?)$/i
-handler.exp = 3
+handler.exp = 100
 
 export default handler
 
