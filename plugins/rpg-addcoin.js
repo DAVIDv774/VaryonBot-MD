@@ -1,14 +1,14 @@
 let handler = async (m, { conn, text }) => { let who
    if (m.isGroup) who = m.mentionedJid[0]
    else who = m.chat
-   if (!who) m.reply('Taguea al usuario')
+   if (!who) return m.reply('Taguea al usuario')
    let txt = text.replace('@' + who.split`@`[0], '').trim()
-   if (!txt) m.reply('Ingrese la cantidad de *coins* que quiere añadir')
+   if (!txt) return m.reply('Ingrese la cantidad de *coins* que quiere añadir')
    if (isNaN(txt)) m.reply('sólo números')
    let cn = parseInt(txt)
    let coins = cn
 
-   if (coins < 1) m.reply('Mínimo es  *1*')
+   if (coins < 1) return m.reply('Mínimo es  *1*')
    let users = global.db.data.users
    users[who].coin += cn
 
