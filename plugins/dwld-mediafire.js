@@ -1,4 +1,4 @@
-import { mediafireDl } from './lib/mediafire.js'
+import { mediafireDl } from '../lib/mediafire.js'
 let handler = async (m, { conn, args }) => {
     if (!global.db.data.chats[m.chat].cmdDl && m.isGroup) return m.reply(`_Este comando está deshabilitado para este grupo._`)
     if (!args[0]) return m.reply(`Y el link?`)
