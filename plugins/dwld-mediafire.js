@@ -8,7 +8,7 @@ let handler = async (m, { conn, args }) => {
 *▢ Nombre:* ${mediafire[0].nama}
 *▢ Tamaño:* ${mediafire[0].size}`
     m.reply(text)
-    try { conn.sendMessage(m.chat, { document: { url: mediafire[0].link }, fileName: mediafire[0].nama, mimetype: mediafire[0].mime }, { quoted: m }); m.react(done); m.coin = true } catch { m.react(error) }
+    try { conn.sendMessage(m.chat, { document: { url: mediafire[0].link }, fileName: mediafire[0].nama, mimetype: mediafire[0].mime }, { quoted: m }); m.react(done); if (global.ajustes.cmdRpg) return m.coin = true} catch { m.react(error) }
 }
 
 handler.help = ['mediafire'].map(v => v + ' <url>')

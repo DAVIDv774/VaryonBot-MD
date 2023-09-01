@@ -35,6 +35,12 @@ global.menu = { contextInfo: { externalAdReply: {
     }
 }
 
+ global.ajustes = () => {
+    let cmdDl = global.db.data.chats[m.chat].cmdDl && m.isGroup
+    let cmdRpg = global.db.data.chats[m.chat].cmdRpg && m.isGroup
+    return { cmdDl, cmdRpg }
+}
+
 global.rpg = { emoticon(string) { string = string.toLowerCase()
     let emot = { role: '🏅', level: '⬆️' }
     let results = Object.keys(emot).map(v => [v, new RegExp(v, 'gi')]).filter(v => v[1].test(string))

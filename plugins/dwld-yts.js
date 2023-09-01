@@ -13,8 +13,8 @@ let handler = async (m, { conn, text }) => {
          case 'canal': return `${cuadro} *${v.name}* (${v.url})\n${cuadro}${v.subCountLabel} (${v.subCount}) Suscribirse\n${cuadro} ${v.videoCount} videos`.trim()
       }
    }).filter(v => v).join('\n\n________________________\n\n')
-   try { conn.sendMessage(m.chat, { image: { url: thumbnail }, caption: teks, }, { quoted: m }) }
-   catch { m.reply('Error') /*conn.sendFile(m.chat, tes[0].thumbnail, 'yts.jpeg', teks, m)*/ }
+   try { conn.sendMessage(m.chat, { image: { url: thumbnail }, caption: teks, }, { quoted: m }); m.coin = true }
+   catch { m.reply('Error') }
 }
 handler.help = ['ytsearch', 'play2']
 handler.tags = ['dl']

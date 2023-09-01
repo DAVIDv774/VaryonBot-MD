@@ -4,7 +4,7 @@ let handler = async (m, { conn, text }) => { let who
    if (!who) return m.reply('Taguea al usuario')
    let txt = text.replace('@' + who.split`@`[0], '').trim()
    if (!txt) return m.reply('Ingrese la cantidad de *coins* que quiere añadir')
-   if (isNaN(txt)) m.reply('sólo números')
+   if (isNaN(txt)) return m.reply('sólo números')
    let cn = parseInt(txt)
    let coins = cn
 
