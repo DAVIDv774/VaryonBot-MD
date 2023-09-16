@@ -14,7 +14,7 @@ let handler = async (m, { conn, text }) => {
    users[who].exp += xp
 
    await m.reply(`*『✨ / XP - AÑADIDO』*\n\n▢  *Total:* ${xp}\n`)
-   conn.fakeReply(m.chat, `*RECIBISTES*\n\n *+${xp} XP*`, who, m.text)
+   conn.fakeReply(m.chat, `*RECIBISTE*\n\n *+${xp} XP*`, who, m.text)
 }
 
 handler.help = ['addxp <@user>']
