@@ -13,7 +13,7 @@ let handler = async (m, { conn, text }) => { let who
    users[who].coin += cn
 
    await m.reply(`*『©️ / Coin - AÑADIDO 』*\n\n▢ *Total:* ${cn}\n`)
-   conn.fakeReply(m.chat, `*RECIBISTES *\n\n*+${cn}* coins`, who, m.text)
+   conn.fakeReply(m.chat, `*RECIBISTE *\n\n*+${cn}* coins`, who, m.text)
 }
 
 handler.help = ['adddi <@user>']
