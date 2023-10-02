@@ -20,8 +20,12 @@ loadPluginFiles(pluginFolder, pluginFilter, { logger: conn.logger, recursiveRead
 
 global.API = (name, path = '/', query = {}, apikeyqueryname) => (name in global.APIs ? global.APIs[name] : name) + path + (query || apikeyqueryname ? '?' + new URLSearchParams(Object.entries({ ...query, ...(apikeyqueryname ? { [apikeyqueryname]: global.APIKeys[name in global.APIs ? global.APIs[name] : name] } : {}) })) : '')
 
-global.db = new Low(/https?:\/\//.test(opts['db'] || '') ? new cloudDBAdapter(opts['db']) : new JSONFile(`${opts._[0] ? opts._[0] + '_' : ''}database.json`)); global.DATABASE = global.db; global.loadDatabase = async function loadDatabase() { if (global.db.READ) return new Promise((resolve) => setInterval(async function () { if (!global.db.READ) { clearInterval(this); resolve(global.db.data == null ? global.loadDatabase() : global.db.data)}}, 1 * 1000)); if (global.db.data !== null) return global.db.READ = true; await global.db.read().catch(console.error); global.db.READ = null; global.db.data = { users: {}, chats: {}, stats: {}, msgs: {}, sticker: {}, settings: {}, ...(global.db.data || {})}; global.db.chain = chain(global.db.data)}
-loadDatabase()
+global.db = new Low(/https?:\/\//.test(opts['db'] || '') ? new cloudDBAdapter(opts['db']) : new JSONFile(`${opts._[0] ? opts._[0] + '_' : ''}database.json`)); global.DATABASE = global.db; global.loadDatabase = async function loadDatabase() { if (global.db.READ) return new Promise((resolve) => setInterval(async function () { if (!global.db.READ) { clearInterval(this); resolve(global.db.data == null ? global.loadDatabase() : global.db.data)}}, 1 * 1000)); if (global.db.data !== null) return global.db.READ = true; await global.db.read().catch(console.error); global.db.READ = null; global.db.data = { users: {}, chats: {}, stats: {}, msgs: {}, sticker: {}, settings: {}, ...(global.db.data || {})}; global.db.chain = chain(global.db.data)}; loadDatabase()
+
+let myData = []
+function processData(data) { myData.push(data); if (myData.length > 1000) { myData.splice(0, 100)}}
+function simulateData() { setInterval(() => { const newData = obtenerNuevoDato(); processData(newData)}, 1000)}
+function obtenerNuevoDato() { return Math.floor(Math.random() * 100) + 1 }; simulateData()
 
 ///Limpieza de archivos temporales
 if (!opts['test']) { setInterval(async () => { await Promise.allSettled([global.db.data ? global.db.write() : Promise.reject('db.data es nulo'), (opts['autocleartmp'] || opts['cleartmp']) ? clearTmp() : Promise.resolve()]) }, 60 * 1000) } setInterval(async () => { await clearTmp() }, 180000)

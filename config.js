@@ -6,6 +6,7 @@ import { join, dirname } from 'path'
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const require = createRequire(__dirname)
 const dPkg = require(join(__dirname, './package.json'))
+const more = String.fromCharCode(8206)
 //
 global.Botvercion = `${dPkg.version}`
 global.Nombrebot = `${dPkg.name}`
@@ -33,6 +34,7 @@ global.APIs = { name: 'https://website'}
 global.APIKeys = { 'https://website': 'apikey'}
 
 global.wait = '_*Procesando, por favor espere...*_'
+global.readMore = more.repeat(850)
 global.rwait = '⌛'
 global.dmoji = '🤭'
 global.done = '✔️'

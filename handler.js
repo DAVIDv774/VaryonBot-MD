@@ -24,6 +24,12 @@ export async function handler(chatUpdate) {
         if (!m) return
         m.exp = 0
         m.coin = false
+
+        const Creador = [this.decodeJid(this.user.id), ...global.owner.map(([number]) => number)].map(v => v?.replace(/[^0-9]/g, '') + '@s.whatsapp.net').includes(m.sender)
+        const Propietario = Creador || m.fromMe
+        const Moderador = Propietario || global.mods.map(v => v.replace(/[^0-9]/g, '') + '@s.whatsapp.net').includes(m.sender)
+        const Premium = Creador || global.prems.map(v => v.replace(/[^0-9]/g, '') + '@s.whatsapp.net').includes(m.sender)
+
         try {
             let user = global.db.data.users[m.sender]
             if (typeof user !== 'object') global.db.data.users[m.sender] = {}
@@ -47,7 +53,18 @@ export async function handler(chatUpdate) {
                 if (!('role' in user)) user.role = 'Novato'
                 if (!('autolevelup' in user)) user.autolevelup = false
                 if (!('chatbot' in user)) user.chatbot = false
+                //////
+                if (!('rowner' in user )) user.rowner = Creador? true : false
+                if (!('owner' in user )) user.owner = Propietario? true : false
+                if (!('modr' in user )) user.modr = Moderador? true : false
+                if (!('premium' in user )) user.premium = Premium? true : false
+                if (!('banActor' in user )) user.banActor = ''
             } else global.db.data.users[m.sender] = {
+                rowner: Creador? true : false,
+                owner: Propietario? true : false,
+                modr: Moderador? true : false,
+                premium: Premium? true : false,
+                banActor: '',
                 exp: 0,
                 coin: 10,
                 lastclaim: 0,
@@ -112,24 +129,19 @@ export async function handler(chatUpdate) {
             } else global.db.data.settings[this.user.jid] = { self: false, autoread: false, restrict: true }
         } catch (e) { console.error(e) }
 
-        const isROwner = [this.decodeJid(this.user.id), ...global.owner.map(([number]) => number)].map(v => v?.replace(/[^0-9]/g, '') + '@s.whatsapp.net').includes(m.sender)
-        const isOwner = isROwner || m.fromMe
-        const isMods = isOwner || global.mods.map(v => v.replace(/[^0-9]/g, '') + '@s.whatsapp.net').includes(m.sender)
-        const isPrems = isROwner || global.prems.map(v => v.replace(/[^0-9]/g, '') + '@s.whatsapp.net').includes(m.sender)
+        const isROwner = global.db.data.users[m.sender].rowner
+        const isOwner  = isROwner || m.fromMe
+        const isModr = isOwner || global.db.data.users[m.sender].modr
+        const isPrems = isROwner || global.db.data.users[m.sender].premium
 
         if (!m.fromMe && opts['nyimak']) return
         if (!isOwner && opts['self']) return
         if (opts['gconly'] && !m.chat.endsWith('g.us')) return setTimeout(() => { teslagod.updateBlockStatus(m.sender, 'block') }, 1000)
-        if (typeof m.text !== 'string')
-            m.text = ''
-
-        if (opts['queque'] && m.text && !m.fromMe && !(isMods || isPrems)) {
-            const id = m.id
-            this.msgqueque.add(id)
-            await this.msgqueque.waitQueue(id)
-        }
+        if (typeof m.text !== 'string') m.text = ''
+        if (opts['queque'] && m.text && !m.fromMe && !(isModr || isPrems)) { const id = m.id; this.msgqueque.add(id); await this.msgqueque.waitQueue(id)}
 
         if (m.isBaileys) return m.exp += Math.ceil(Math.random() * 10)
+
         let usedPrefix
         let _user = global.db.data?.users?.[m.sender]
         const groupMetadata = (m.isGroup ? await Connection.store.fetchGroupMetadata(m.chat, this.groupMetadata) : {}) || {}
@@ -151,7 +163,7 @@ export async function handler(chatUpdate) {
             const str2Regex = str => str.replace(/[|\\{}()[\]^$+*?.]/g, '\\$&')
             let _prefix = plugin.customPrefix ? plugin.customPrefix : this.prefix ? this.prefix : global.prefix
             let match = (_prefix instanceof RegExp ? [[_prefix.exec(m.text), _prefix]] : Array.isArray(_prefix) ? _prefix.map(p => { let re = p instanceof RegExp ? p : new RegExp(str2Regex(p)); return [re.exec(m.text), re] }) : typeof _prefix === 'string' ? [[new RegExp(str2Regex(_prefix)).exec(m.text), new RegExp(str2Regex(_prefix))]] : [[[], new RegExp]]).find(p => p[1])
-            if (typeof plugin.before === 'function') { if (await plugin.before.call(this, m, { match, conn: this, participants, groupMetadata, user, bot, isROwner, isOwner, isRAdmin, isAdmin, isBotAdmin, isPrems, chatUpdate, __dirname: ___dirname, __filename })) continue }
+            if (typeof plugin.before === 'function') { if (await plugin.before.call(this, m, { match, conn: this, participants, groupMetadata, user, bot, isROwner, isOwner, isModr, isRAdmin, isAdmin, isBotAdmin, isPrems, chatUpdate, __dirname: ___dirname, __filename })) continue }
             if (typeof plugin !== 'function') continue
             if ((usedPrefix = (match[0] || '')[0])) {
                 let noPrefix = m.text.replace(usedPrefix, '')
@@ -182,8 +194,8 @@ export async function handler(chatUpdate) {
                     fail('owner', m, this)
                     continue
                 }
-                if (plugin.mods && !isMods) { // Moderator
-                    fail('mods', m, this)
+                if (plugin.modr && !isModr) { // Moderator
+                    fail('modr', m, this)
                     continue
                 }
                 if (plugin.premium && !isPrems) { // Premium
@@ -235,10 +247,11 @@ export async function handler(chatUpdate) {
                     bot,
                     isROwner,
                     isOwner,
+                    isModr,
+                    isPrems,
                     isRAdmin,
                     isAdmin,
                     isBotAdmin,
-                    isPrems,
                     chatUpdate,
                     __dirname: ___dirname,
                     __filename
@@ -261,18 +274,7 @@ export async function handler(chatUpdate) {
                                     m.reply(`*¡Se detecto un error en el bot¡:*\n\n*▢ Plugin:* ${m.plugin}\n*▢ Usuario:* wa.me/${m.sender.split("@")[0]}\n*▢ Chat:* ${m.chat}\n*▢ Comando:* ${usedPrefix}${command} ${args.join(' ')}\n\n\`\`\`${text}\`\`\` \n`.trim(), data.jid)
                             }
                     }
-                } finally {
-                    if (typeof plugin.after === 'function') {
-                        try {
-                            await plugin.after.call(this, m, extra)
-                        } catch (e) {
-                            console.error(e)
-                        }
-                    }
-                    if (m.coin)
-                        m.reply(+m.coin + '㉿ Coin/s utilizadas')
-                }
-                break
+                } finally { if (typeof plugin.after === 'function') {try {await plugin.after.call(this, m, extra) } catch (e) { console.error(e) }} if (m.coin) m.reply(m.coin + '㉿ Coin/s utilizadas')}break
             }
         }
     } catch (e) {
@@ -318,14 +320,8 @@ export async function handler(chatUpdate) {
             }
         }
 
-        try {
-            if (!opts['noprint']) await printMessage(m, this)
-        } catch (e) {
-            console.log(m, m.quoted, e)
-        }
-        if (opts['autoread'])
-            await this.readMessages([m.key])
-
+        try { if (!opts['noprint']) await printMessage(m, this) } catch (e) { console.log(m, m.quoted, e)}
+        if (opts['autoread']) await this.readMessages([m.key])
     }
 }
 
@@ -348,20 +344,15 @@ export async function participantsUpdate({ id, participants, action }) {
                     let mas = String.fromCharCode(8206).repeat(850)
                     try { pp = await this.profilePictureUrl(user, 'image') } catch (e) { } finally {
                         let apii = await this.getFile(pp)
-                        text = (action === 'add' ? (chat.sWelcome || this.welcome || Connection.conn.welcome || 'Welcome, @user!').replace('@subject', await this.getName(id)).replace('@desc', groupMetadata.desc?.toString() || '*Descripción*') :
-                            (chat.sBye || this.bye || Connection.conn.bye || 'Bye, @user!')).replace('@user', '@' + user.split('@')[0])
+                        text = (action === 'add' ? (chat.sWelcome || this.welcome || Connection.conn.welcome || 'Welcome, @user!').replace('@subject', await this.getName(id)).replace('@desc', groupMetadata.desc?.toString() || '*Descripción*') : (chat.sBye || this.bye || Connection.conn.bye || 'Bye, @user!')).replace('@user', '@' + user.split('@')[0])
 
                         this.sendFile(id, apii.data, 'Varyon.jpeg', text, { key: { participant: "0@s.whatsapp.net", "remoteJid": "0@s.whatsapp.net" }, "message": { "groupInviteMessage": { "groupJid": "573245088667-1616169743@g.us", "inviteCode": "m", "groupName": "P", "caption": action === 'add' ? 'Nuevo participante bienvenido!' : 'Menos un participante, no le sabe al grupo', 'jpegThumbnail': fs.readFileSync('./multimedia/imagenes/mythumb.jpg') } } }, false, { contextInfo: { mentionedJid: [user], externalAdReply: { title: action === 'add' ? 'Fecha de ingreso | ' + fesha : 'Fecha de salida | ' + fesha, "body": 'El bot mas chidori tercer mundista', "previewType": "PHOTO", "thumbnailUrl": ppg, "sourceUrl": `youtube.com` } } })
                     }
                 }
             }
             break
-        case 'promote':
-            text = (chat.sPromote || this.spromote || Connection.conn.spromote || '```@user ahora es admin```')
-        case 'demote':
-            if (!text) text = (chat.sDemote || this.sdemote || Connection.conn.sdemote || '@user ```Ya no es admin```')
-            text = text.replace('@user', '@' + participants[0].split('@')[0])
-            if (chat.detect) this.sendMessage(id, { text, mentions: this.parseMention(text) })
+        case 'promote': text = (chat.sPromote || this.spromote || Connection.conn.spromote || '```@user ahora es admin```')
+        case 'demote': if (!text) text = (chat.sDemote || this.sdemote || Connection.conn.sdemote || '@user ```Ya no es admin```'); text = text.replace('@user', '@' + participants[0].split('@')[0]); if (chat.detect) this.sendMessage(id, { text, mentions: this.parseMention(text) })
             break
     }
 }
@@ -372,10 +363,14 @@ export async function groupsUpdate(groupsUpdate) {
         if (!id) continue
         let chats = global.db.data.chats[id], text = ''
         if (!chats?.detect) continue
-        if (groupUpdate.desc) text = (chats.sDesc || this.sDesc || Connection.conn.sDesc || '```La descripción fue actualizada```\n@desc').replace('@desc', groupUpdate.desc)
-        if (groupUpdate.subject) text = (chats.sSubject || this.sSubject || Connection.conn.sSubject || '```El nombre del grupo fue actualizada```\n@subject').replace('@subject', groupUpdate.subject)
-        if (groupUpdate.icon) text = (chats.sIcon || this.sIcon || Connection.conn.sIcon || '```Imagen del grupo actualizada correctamente```').replace('@icon', groupUpdate.icon)
-        if (groupUpdate.revoke) text = (chats.sRevoke || this.sRevoke || Connection.conn.sRevoke || '```El link del grupo fue actualizado```\n@revoke').replace('@revoke', groupUpdate.revoke)
+        if (groupUpdate.desc) text = ('*「 La descripción fue actualizada 」*\n@desc').replace('@desc', groupUpdate.desc)
+        if (groupUpdate.subject) text = ('*「 El nombre del grupo fue actualizado 」*\n@subject').replace('@subject', groupUpdate.subject)
+        if (groupUpdate.icon) text = ('*「 Imagen del grupo actualizada 」*').replace('@icon', groupUpdate.icon)
+        if (groupUpdate.revoke) text = ('*「 El link del grupo fue actualizado 」*\n@revoke').replace('@revoke', groupUpdate.revoke)
+        if (groupUpdate.announce == true) text = ('*「 Configuración del grupo cambiada 」*\n¡Ahora solo los administradores pueden enviar mensajes!')
+        if (groupUpdate.announce == false) text = ('*「 Configuración del grupo cambiada 」*\n¡Ahora todos los participantes pueden enviar mensajes!')
+        if (groupUpdate.restrict == true) text = ('*「 La configuración del grupo ha cambiado 」*\nLa información del grupo se ha restringido, ¡ahora solo los administradores pueden editar la información del grupo!')
+        if (groupUpdate.restrict == false) text = ('*「 La configuración del grupo ha cambiado 」*\nSe ha abierto la información del grupo, ¡ahora todos los participantes pueden editar la información del grupo!')
         if (!text) continue
         await this.sendMessage(id, { text, mentions: this.parseMention(text) })
     }
@@ -411,7 +406,7 @@ global.dfail = (type, m, conn) => {
     let msg = {
         rowner: 'Este comando solo puede ser utilizado por el *dueño*',
         owner: 'Este comando solo puede ser utilizado por el *propietario del bot*',
-        mods: '*Este comando solo puede ser utilizado por un *moderador*',
+        modr: '*Este comando solo puede ser utilizado por un *moderador*',
         premium: 'Esta solicitud es solo para usuarios *premium*',
         group: 'Este comando solo se puede usar en *grupos*',
         private: 'Este comando solo se puede usar por *chat privado*',
