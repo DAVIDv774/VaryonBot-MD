@@ -130,9 +130,9 @@ export async function handler(chatUpdate) {
         } catch (e) { console.error(e) }
 
         const isROwner = global.db.data.users[m.sender].rowner
-        const isOwner  = isROwner || m.fromMe
-        const isModr = isOwner || global.db.data.users[m.sender].modr
-        const isPrems = isROwner || global.db.data.users[m.sender].premium
+        const isOwner  = global.db.data.users[m.sender].owner
+        const isModr = global.db.data.users[m.sender].modr
+        const isPrems = global.db.data.users[m.sender].premium
 
         if (!m.fromMe && opts['nyimak']) return
         if (!isOwner && opts['self']) return
@@ -274,7 +274,7 @@ export async function handler(chatUpdate) {
                                     m.reply(`*¡Se detecto un error en el bot¡:*\n\n*▢ Plugin:* ${m.plugin}\n*▢ Usuario:* wa.me/${m.sender.split("@")[0]}\n*▢ Chat:* ${m.chat}\n*▢ Comando:* ${usedPrefix}${command} ${args.join(' ')}\n\n\`\`\`${text}\`\`\` \n`.trim(), data.jid)
                             }
                     }
-                } finally { if (typeof plugin.after === 'function') {try {await plugin.after.call(this, m, extra) } catch (e) { console.error(e) }} if (m.coin) m.reply(m.coin + '㉿ Coin/s utilizadas')}break
+                } finally { if (typeof plugin.after === 'function') {try {await plugin.after.call(this, m, extra) } catch (e) { console.error(e) }} /*if (m.coin) m.reply(m.coin + '㉿ Coin/s utilizadas')*/}break
             }
         }
     } catch (e) {
