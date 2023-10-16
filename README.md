@@ -16,7 +16,7 @@
 | Descarga de música/videos|✔️|
 </div>
 
-## Si encuentras algún error ó necesitas más información, por favor contactame
+### Siéntanse libres de utilizar el código como deseen. No es necesario dar créditos ni hacer mención alguna. Si les resulta útil, aquí lo tienen disponible.
 <a href="https://wa.me/573245088667?text=Wenas...+me+ayudas+con+el+bot+multidevice+:)"><img src="https://img.shields.io/badge/WhatsApp-25D366?style=for-the-badge&logo=whatsapp&logoColor=white" />
 
 </div>
