@@ -16,4 +16,4 @@
 | Descarga de música/videos|✔️|
 </div>
 
-### Siéntanse libres de utilizar el código como deseen. No es necesario dar créditos ni hacer mención alguna. Si les resulta útil, aquí lo tienen disponible.
+<div align="center"><h1> Siéntanse libres de utilizar el código como deseen. No es necesario dar créditos ni hacer mención alguna. Si les resulta útil, aquí lo tienen disponible </h1>
